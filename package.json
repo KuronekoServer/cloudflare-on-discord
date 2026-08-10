@@ -1,0 +1,42 @@
+{
+  "name": "cloudflare-on-discord",
+  "version": "0.1.0",
+  "private": true,
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "npm run build --workspaces --if-present",
+    "check": "npm run typecheck && npm run test",
+    "config:render": "node scripts/render-wrangler-config.mjs",
+    "db:migrate:local": "node scripts/migrate-d1.mjs",
+    "db:migrate:remote": "node scripts/migrate-d1.mjs --remote",
+    "dev:web": "npm run dev -w @cloudcord/web",
+    "dev:worker": "npm run dev -w @cloudcord/worker",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "infra:plan": "node scripts/provision-cloudflare.mjs --env dev",
+    "load:websocket": "node tools/load/websocket-harness.mjs",
+    "load:webrtc": "node tools/load/realtime-harness.mjs",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "test:watch": "vitest",
+    "typecheck": "npm run typecheck --workspaces --if-present",
+    "worker:dry-run": "npm run deploy:dry-run -w @cloudcord/worker"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "5.20260809.1",
+    "@playwright/test": "1.62.1",
+    "fast-check": "4.9.0",
+    "prettier": "3.9.6",
+    "typescript": "7.0.2",
+    "vitest": "4.1.10",
+    "wrangler": "4.120.0"
+  }
+}

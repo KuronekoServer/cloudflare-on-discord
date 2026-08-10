@@ -1,0 +1,25 @@
+[package]
+name = "cloudcord-desktop"
+version = "0.1.0"
+description = "CloudCord desktop client"
+authors = ["KuronekoServer contributors"]
+license = "AGPL-3.0-or-later"
+repository = "https://github.com/KuronekoServer/cloudflare-on-discord"
+edition = "2024"
+rust-version = "1.95"
+
+[lib]
+name = "cloudcord_desktop_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+keyring = { version = "3", features = ["apple-native", "windows-native", "sync-secret-service"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tauri = { version = "2", features = [] }
+tauri-plugin-deep-link = "2"
+tauri-plugin-opener = "2"
+tauri-plugin-updater = "2"

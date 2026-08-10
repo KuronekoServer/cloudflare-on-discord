@@ -1,0 +1,8 @@
+JWT_SIGNING_KEY=unsafe-local-development-jwt-key
+DATA_ENCRYPTION_KEY=unsafe-local-development-data-key
+LOOKUP_HMAC_KEY=unsafe-local-development-lookup-key
+TURNSTILE_SECRET=
+TURNSTILE_BYPASS_TOKEN=local-dev
+ADMIN_BOOTSTRAP_TOKEN=unsafe-local-development-bootstrap-token
+REALTIME_APP_ID=
+REALTIME_API_TOKEN=

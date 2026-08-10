@@ -1,0 +1,14 @@
+{
+  "name": "@cloudcord/desktop",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "tauri build",
+    "build:release": "tauri build --config src-tauri/tauri.release.conf.json",
+    "dev": "tauri dev",
+    "typecheck": "cargo check --manifest-path src-tauri/Cargo.toml"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "2.11.4"
+  }
+}

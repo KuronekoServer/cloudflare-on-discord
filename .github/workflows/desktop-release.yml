@@ -1,0 +1,74 @@
+name: Desktop release to R2
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            target: windows-x86_64
+            rust_target: x86_64-pc-windows-msvc
+            bundle_dir: apps/desktop/src-tauri/target/x86_64-pc-windows-msvc/release/bundle
+            updater_key: windows-x86_64
+          - os: macos-latest
+            target: macos-universal
+            rust_target: universal-apple-darwin
+            bundle_dir: apps/desktop/src-tauri/target/universal-apple-darwin/release/bundle
+            updater_key: darwin-aarch64 darwin-x86_64
+          - os: ubuntu-24.04
+            target: linux-x86_64
+            rust_target: x86_64-unknown-linux-gnu
+            bundle_dir: apps/desktop/src-tauri/target/x86_64-unknown-linux-gnu/release/bundle
+            updater_key: linux-x86_64
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: 1.95.0
+          targets: ${{ runner.os == 'macOS' && 'aarch64-apple-darwin,x86_64-apple-darwin' || matrix.rust_target }}
+      - if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
+      - run: npm ci
+      - run: npm run build:release -w @cloudcord/desktop -- --target ${{ matrix.rust_target }}
+        env:
+          VITE_API_BASE: ${{ vars.CLOUDCORD_PUBLIC_ORIGIN }}/api/v1
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          TAURI_CONFIG: >-
+            {"plugins":{"updater":{"endpoints":["${{ vars.R2_RELEASES_PUBLIC_BASE }}/desktop/latest/{{target}}-{{arch}}.json"],"pubkey":"${{ vars.TAURI_SIGNING_PUBLIC_KEY }}"}}}
+      - name: Create updater manifest
+        shell: bash
+        run: |
+          node scripts/create-updater-manifest.mjs \
+            --bundle-dir "${{ matrix.bundle_dir }}" \
+            --target "${{ matrix.target }}" \
+            --version "${GITHUB_REF_NAME}" \
+            --tag "${GITHUB_REF_NAME}" \
+            --base-url "${{ vars.R2_RELEASES_PUBLIC_BASE }}" \
+            --output updater-manifest.json
+      - name: Upload bundles to R2
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          find "${{ matrix.bundle_dir }}" -type f -print0 | while IFS= read -r -d '' file; do
+            key="desktop/${GITHUB_REF_NAME}/${{ matrix.target }}/$(basename "$file")"
+            npx wrangler r2 object put "cloudcord-prod-releases/$key" --file "$file" --remote
+          done
+          for updater_key in ${{ matrix.updater_key }}; do
+            npx wrangler r2 object put "cloudcord-prod-releases/desktop/latest/${updater_key}.json" --file updater-manifest.json --remote
+          done

@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "environments": ["dev", "staging", "prod"],
+  "d1": {
+    "identity": 1,
+    "social": 16,
+    "guild": 32
+  },
+  "durableObjectIdShards": 1024,
+  "r2": ["media", "releases"],
+  "kv": ["public-cache"],
+  "queues": ["events", "events-dlq"],
+  "defaults": {
+    "uploadFileBytes": 52428800,
+    "uploadDailyUserBytes": 1073741824,
+    "uploadGuildBytes": 107374182400,
+    "voiceRoomParticipants": 50,
+    "voiceRoomScreenShares": 5
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "environment": "staging",
+  "publicOrigin": "https://chat-staging.example.com",
+  "rpId": "chat-staging.example.com",
+  "emailFrom": "noreply@chat-staging.example.com",
+  "secretStoreId": "00000000000000000000000000000000",
+  "publicCacheId": "00000000000000000000000000000000",
+  "d1": {
+    "cloudcord-staging-identity": "00000000-0000-0000-0000-000000000001",
+    "cloudcord-staging-social-00": "00000000-0000-0000-0000-000000000100",
+    "cloudcord-staging-guild-00": "00000000-0000-0000-0000-000000000200"
+  },
+  "realtimeAppId": "replace-with-realtime-app-id",
+  "cloudflareAccountId": "replace-with-account-id"
+}

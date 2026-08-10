@@ -1,0 +1,101 @@
+{
+  "snapshotDate": "2026-08-10",
+  "apiVersion": 10,
+  "status": "partial",
+  "clientTargets": {
+    "discord.js": "14.27.0",
+    "discord.py": "2.7.1",
+    "JDA": "6.4.2"
+  },
+  "gateway": {
+    "implementedOpcodes": [
+      "Dispatch",
+      "Heartbeat",
+      "Identify",
+      "Resume",
+      "Reconnect",
+      "InvalidSession",
+      "Hello",
+      "HeartbeatAck"
+    ],
+    "implementedEvents": [
+      "READY",
+      "RESUMED",
+      "MESSAGE_CREATE",
+      "MESSAGE_UPDATE",
+      "MESSAGE_DELETE",
+      "MESSAGE_REACTION_ADD",
+      "MESSAGE_REACTION_REMOVE",
+      "CHANNEL_PINS_UPDATE",
+      "INTERACTION_CREATE"
+    ],
+    "encodings": ["json"],
+    "resumeWindowSeconds": 300,
+    "pending": [
+      "ETF encoding",
+      "zlib-stream compression",
+      "complete Discord event and intent coverage",
+      "Discord session start limit semantics"
+    ]
+  },
+  "rest": {
+    "implementedGroups": {
+      "discovery": ["gateway", "gateway/bot", "current bot user"],
+      "channels": [
+        "get/edit/delete channel",
+        "list/get/create/edit/delete message",
+        "add/remove own reaction",
+        "list/add/remove pins",
+        "poll create and own vote add/remove",
+        "forum/thread create and thread membership"
+      ],
+      "guilds": [
+        "get guild",
+        "list channels",
+        "role create/list/edit/delete",
+        "member list/get and role assignment",
+        "ban list/create/delete",
+        "scheduled event list/create/get/edit/delete",
+        "keyword block AutoMod rule list/create/get/edit/delete",
+        "Stage instance create/get/edit/delete"
+      ],
+      "applications": [
+        "current OAuth2 application",
+        "global and guild command create/list/edit/delete/bulk overwrite",
+        "Gateway interaction callback",
+        "deferred follow-up",
+        "original response get/edit/delete"
+      ],
+      "webhooks": [
+        "channel webhook create/list",
+        "token webhook get/edit/delete/execute"
+      ],
+      "voiceAdapter": [
+        "join/leave",
+        "Realtime session create",
+        "track publish/subscribe/renegotiate/close"
+      ]
+    },
+    "pending": [
+      "remaining Discord v10 resource routes and object fields",
+      "audit log reason coverage on every applicable route",
+      "multipart attachment parity",
+      "OAuth2 authorization-code token exchange and non-Bot scopes",
+      "remaining advanced AutoMod, thread, emoji, sticker and soundboard REST parity",
+      "outgoing HTTP interaction endpoint signature mode"
+    ]
+  },
+  "voice": {
+    "wireCompatible": false,
+    "adapter": "Node/TypeScript live Opus or PCM to Cloudflare WebRTC adapter",
+    "mediaPersistence": false
+  },
+  "excluded": [
+    "private user API",
+    "billing",
+    "store",
+    "activities",
+    "Nitro equivalent",
+    "Discord UDP/RTP voice wire compatibility"
+  ]
+}
