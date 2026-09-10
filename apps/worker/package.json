@@ -15,7 +15,7 @@
     "@cloudcord/core": "0.1.0",
     "@hono/zod-openapi": "1.5.2",
     "@simplewebauthn/server": "13.3.2",
-    "hono": "4.13.1",
+    "hono": "4.13.5",
     "zod": "4.4.3"
   }
 }
